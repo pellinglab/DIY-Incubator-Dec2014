@@ -18,11 +18,11 @@ http://forum.arduino.cc/index.php?topic=91467.0
 #include "cozir.h"
 #include "SoftwareSerial.h"
 
-SoftwareSerial nss(2, 3); // (Tx, Rx from the sensor)
+SoftwareSerial nss(2, 3); // Tx, Rx from the sensor to Pins 2, 3 on Arduino
 COZIR czr(nss);
 
 float c, reading = 0;
-float multiplier = 0.001;  // 10/10000 (Hardware multiplier/ppm conversion)
+float multiplier = 0.001;  // 0.001 = 10/10000 (Hardware multiplier/ppm conversion)
                            // For more details see sensor specificaiton sheet  
                            
 void setup()

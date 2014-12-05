@@ -30,12 +30,12 @@ void setup()
 void loop()
 {
   sensors.requestTemperatures(); // Send the command to get temperatures
-  T1=sensors.getTempCByIndex(0);
-  T2=sensors.getTempCByIndex(1);
+  T1=sensors.getTempCByIndex(0); // Sensor 0
+  T2=sensors.getTempCByIndex(1); // Sensor 1
   Tavg = (T1+T2)/2;
-  Serial.print("Temperature for Device 0 is: ");
+  Serial.print("Temperature for Sensor 0 is: ");
   Serial.println(T1);
-  Serial.print("Temperature for Device 1 is: ");
+  Serial.print("Temperature for Sensor 1 is: ");
   Serial.println(T2);
   Serial.print("Average Temperature: ");
   Serial.println(Tavg);
