@@ -126,16 +126,14 @@ void loop()
   }
   CO2 = SingleCO2/3;
   SingleCO2 = 0;
-  
-  CO2 = czr.CO2()*multiplier;
-  
+    
   // Open/close the solenoid valve based on the current CO2 reading 
   // Solenoid  opens for 0.2sec, followed by a 2sec delay to mix air/CO2
   if (CO2 < CO2Setpoint) {
     digitalWrite(Solenoid, HIGH);
     delay(200);
     digitalWrite(Solenoid, LOW);
-    delay(500);
+    delay(1000);
   } else if (CO2 > CO2Setpoint) {
     digitalWrite(Solenoid, LOW);
   } 
