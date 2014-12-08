@@ -40,7 +40,6 @@ Pin #9: PWM Fan Control
 // Ideal is 37.0 and 5.0 (Temp and CO2).
 float TSetpoint = 36.9;
 float CO2Setpoint = 4.8;
-///////// TEMP AND CO2 SETPOINTS ///////// 
 
 ////////* LIBRARIES  *////////
 // DS18B20 Temp Sensors
@@ -55,21 +54,18 @@ float CO2Setpoint = 4.8;
 #include "Wire.h"
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_GFX.h"
-////////* LIBRARIES  *////////
 
 ////////* RELAY and FAN CONTROL *////////
 int HeatingIndicatorLED = 5; // indicator LED for heaters
 int Heater = 7;  // Relay for controlling power to heaters
 int Solenoid = 8; // Relay for controlling 12V solenoid valve
 int fan = 9; // PWM control over 12V fan
-////////* RELAY and FAN CONTROL *////////
 
 ////////* ONE WIRE DS18B20 TEMP SENSORS  *////////
 #define ONE_WIRE_BUS 6 // Sensors on digital pin 4 of the Arduino
 OneWire oneWire(ONE_WIRE_BUS); // Setup a oneWire instance to communicate with ANY OneWire devices
 DallasTemperature sensors(&oneWire); // Pass our oneWire reference to Dallas Temperature.
 float T1, T2, AvgT, SingleT  = 0;
-////////* ONE WIRE DS18B20 TEMP SENSORS  *////////
 
 ////////* SPRINTIR COZIR CO2 SENSOR  *////////
 SoftwareSerial nss(2,3); // Rx,Tx - Pin 5,7 on sensor
@@ -77,13 +73,11 @@ COZIR czr(nss);
 float SingleCO2, CO2 = 0;
 float multiplier = 0.001;  // 10/10000 (Hardware multiplier/ppm conversion).  
 float reading = 0;
-////////* SPRINTIR COZIR CO2 SENSOR  *////////
 
 ///////// MATRIX LED DISPLAY SETUP ///////// 
 Adafruit_7segment matrix = Adafruit_7segment();
 long previousMillis = 0;        // will store last time LED was updated
 int update = 0;
-///////// LED DISPLAY SETUP /////////
 
 void setup()
 {
