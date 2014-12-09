@@ -90,7 +90,7 @@ int update = 0;
 void setup()
 {
   Serial.begin(9600);   // Start serial port
-  //czr.SetOperatingMode(CZR_POLLING);  // Start the CO2 sensor and put into POLLING mode
+  czr.SetOperatingMode(CZR_POLLING);  // Start the CO2 sensor and put into POLLING mode
   sensors.begin();      // Start up the temperature sensor library
   matrix.begin(0x70);   // Start Matrix
   matrix.print(8888);   // Print '8888' on matrix
