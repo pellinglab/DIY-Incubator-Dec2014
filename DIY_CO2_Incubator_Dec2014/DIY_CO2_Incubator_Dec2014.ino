@@ -2,7 +2,7 @@
 DIY CO2 INCUBATOR FOR MAMMALIAN CELL CULUTRE (ARDUINO 1.06 and UNO R3)
 
 DECEMBER 2014. 
-WRITTEN BY ANDREW E. PELLING 
+WRITTEN BY ANDREW E. PELLING
 http://www.pellinglab.net 
 
 Simple incubator with 12V resistive heaters, 12V normally closed solenoid and CO2 Sensor. 
