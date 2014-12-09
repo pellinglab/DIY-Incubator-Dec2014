@@ -28,11 +28,12 @@ CO2 supplied by BOC Gas, SodaStream or Paintball CO2 tanks.
 
 Arduino UNO Pin Connections:
 Pin 2,3: Tx/Rx from CO2 Sensor
-Pin #5: Inidicator LED
+Pin #5: Indicator LED
 Pin #6: Temperature Sensors
 Pin #7: Heater Relay
 Pin #8: Solenoid Relay
 Pin #9: PWM Fan Control
+SCL/SDA Pins: 7-Segment Display
 */
 
 ///////// TEMP AND CO2 CONTROL ///////// 
