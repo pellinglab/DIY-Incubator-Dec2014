@@ -26,20 +26,27 @@ Possible improvements could be to utilize PID library and PWM control the heater
 
 CO2 supplied by BOC Gas, SodaStream or Paintball CO2 tanks. 
 
-Arduino Pin Connections:
+Arduino UNO Pin Connections:
 Pin 2,3: Tx/Rx from CO2 Sensor
 Pin #5: Inidicator LED
+Pin #6: Temperature Sensors
 Pin #7: Heater Relay
 Pin #8: Solenoid Relay
 Pin #9: PWM Fan Control
 */
 
-///////// TEMP AND CO2 SETPOINTS ///////// 
-// MUST be set according to your own system. TRIAL AND ERROR.
+///////// TEMP AND CO2 CONTROL ///////// 
+// Control works by reading a sensor (temperature or CO2) 3 times and averaging (to flatten out noise)
+// If the temperature is below the setpoint, the heaters turn on otherwise they are off
+// If the CO2 is below the setpoint, the solenoid opens for a given DURATION and then closes
+// The cycle repeats until the setpoints are reached. 
+
+// Setpoints and Durations MUST be set according to your own system. TRIAL AND ERROR.
 // May need to increase/decrease depending on size/shape of incubator, CO2 flow rate, etc.
 // Ideal is 37.0 and 5.0 (Temp and CO2).
-float TSetpoint = 36.9;
-float CO2Setpoint = 4.8;
+float TSetpoint = 36.9; // Temperature in Celsius
+float CO2Setpoint = 4.8; // CO2 level in %
+float SolenoidOnTime = 200; // Time in milliseconds
 
 ////////* LIBRARIES  *////////
 // DS18B20 Temp Sensors
@@ -100,9 +107,9 @@ void setup()
 
 void loop()
 {
-  // Read the average temp between 2 sensors 3 times and find the average.
+  // Read the average temperature over both sensors 3 times, then find the average.
   for (int i = 0; i<3; i++) {
-    sensors.requestTemperatures(); // Send the command to get temperatures
+    sensors.requestTemperatures();
     T1=sensors.getTempCByIndex(0);
     T2=sensors.getTempCByIndex(1);
     SingleT += (T1+T2)/2;
@@ -112,15 +119,16 @@ void loop()
   SingleT = 0;
   
   // Turn on/off heater based on temperature reading
+  // Heater turns on for a duration of 'TempOnTime' and then turns off
   if (AvgT < TSetpoint) {
-    digitalWrite(Heater, HIGH);    
+    digitalWrite(Heater, HIGH);
     analogWrite(HeatingIndicatorLED, 255);
   } else if (AvgT > TSetpoint) {
     digitalWrite(Heater, LOW);
     analogWrite(HeatingIndicatorLED, 0);
   } 
 
-  // Read CO2 sensor 3 times and find determine the average.
+  // Read CO2 sensor 3 times and determine the average.
   for (int i = 0; i<3; i++) {
     SingleCO2 += czr.CO2()*multiplier;
   }
@@ -128,12 +136,11 @@ void loop()
   SingleCO2 = 0;
     
   // Open/close the solenoid valve based on the current CO2 reading 
-  // Solenoid  opens for 0.2sec, followed by a 2sec delay to mix air/CO2
+  // Solenoid  opens for a duration of 'SolenoidOnTime' and then closes
   if (CO2 < CO2Setpoint) {
     digitalWrite(Solenoid, HIGH);
-    delay(200);
+    delay(SolenoidOnTime);
     digitalWrite(Solenoid, LOW);
-    delay(1000);
   } else if (CO2 > CO2Setpoint) {
     digitalWrite(Solenoid, LOW);
   } 
