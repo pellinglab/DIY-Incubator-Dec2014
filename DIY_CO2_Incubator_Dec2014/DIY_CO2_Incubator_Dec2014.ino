@@ -58,11 +58,11 @@ SCL/SDA Pins: 7-Segment Display
 
 float TSetpoint = 36.9; // Setpoint Temperature in Celsius
 float TempThreshold = 0.98; // Threshold to switch to stepping control in %/100
-int HeatOnTime = 1000; // Stepping time in milliseconds
+int HeatOnTime = 1000; // Duration time in milliseconds
 
 float CO2Setpoint = 4.8; // Setpoint CO2 level in %
 float CO2Threshold= 0.85; // Threshold to switch to stepping control in %/100
-int SolenoidOnTime = 200; // Stepping time in milliseconds
+int SolenoidOnTime = 200; // Duration time in milliseconds
 
 ////////* LIBRARIES  *////////
 // DS18B20 Temp Sensors
