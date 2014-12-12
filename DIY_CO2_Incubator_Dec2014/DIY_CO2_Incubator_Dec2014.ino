@@ -1,5 +1,6 @@
 /*
 DIY CO2 INCUBATOR FOR MAMMALIAN CELL CULUTRE (ARDUINO 1.06 and UNO R3)
+http://www.pellinglab.net/diy/diyco2incubator/
 
 DECEMBER 2014. 
 WRITTEN BY ANDREW E. PELLING
@@ -37,17 +38,31 @@ SCL/SDA Pins: 7-Segment Display
 */
 
 ///////// TEMP AND CO2 CONTROL ///////// 
-// Control works by reading a sensor (temperature or CO2) 3 times and averaging (to flatten out noise)
-// If the temperature is below the setpoint, the heaters turn on otherwise they are off
-// If the CO2 is below the setpoint, the solenoid opens for a given DURATION and then closes
-// The cycle repeats until the setpoints are reached. 
-
-// Setpoints and Durations MUST be set according to your own system. TRIAL AND ERROR.
+// Control works by reading a sensor (temperature or CO2) 3 times and averaging (to flatten out noise).
+// The measurement is compared to a user-defined SETPOINT.
+//
+// If the temperature is below the setpoint, the heaters turn on. Once the temperature comes within
+// a user-defined THRESHOLD of the setpoint, a stepping heating cycle begins in which the heatures 
+// are turned on for a user-defined DURATION and then turned off. This on/off cycle repeats until 
+// the setpoint is reached.
+//
+// CO2 is controlled in a similar manner to the temerpature. If the CO2 is below the setpoint, the solenoid 
+// opens allowing the flow of CO2 into the incubator. Once the CO2 content comes within a user-defined 
+// THRESHOLD of the setpoint, a stepping cycle begins. The solenoid opens for a user defined DURATION and 
+// then closes. The open/closed cycle repeats until the setpoint is reached. 
+//
+// The cycles allow the system to step up to the setpoints.
+//
+// Setpoints, thresholds and durations MUST be set according to your own system by TRIAL AND ERROR.
 // May need to increase/decrease depending on size/shape of incubator, CO2 flow rate, etc.
-// Ideal is 37.0 and 5.0 (Temp and CO2).
-float TSetpoint = 36.9; // Temperature in Celsius
-float CO2Setpoint = 4.8; // CO2 level in %
-float SolenoidOnTime = 200; // Time in milliseconds
+
+float TSetpoint = 36.9; // Setpoint Temperature in Celsius
+float TempThreshold = 0.98; // Threshold to switch to stepping control in %/100
+int HeatOnTime = 1000; // Stepping time in milliseconds
+
+float CO2Setpoint = 4.8; // Setpoint CO2 level in %
+float CO2Threshold= 0.85; // Threshold to switch to stepping control in %/100
+int SolenoidOnTime = 200; // Stepping time in milliseconds
 
 ////////* LIBRARIES  *////////
 // DS18B20 Temp Sensors
@@ -121,9 +136,15 @@ void loop()
   
   // Turn on/off heater based on temperature reading
   // Heater turns on for a duration of 'TempOnTime' and then turns off
-  if (AvgT < TSetpoint) {
+  if (AvgT < TSetpoint && AvgT < TempThreshold*TSetpoint) {
     digitalWrite(Heater, HIGH);
     analogWrite(HeatingIndicatorLED, 255);
+  } else if (AvgT < TSetpoint && AvgT > TempThreshold*TSetpoint) {
+    digitalWrite(Heater, HIGH);
+    analogWrite(HeatingIndicatorLED, 255);
+    delay(HeatOnTime);
+    digitalWrite(Heater, LOW);
+    analogWrite(HeatingIndicatorLED, 0); 
   } else if (AvgT > TSetpoint) {
     digitalWrite(Heater, LOW);
     analogWrite(HeatingIndicatorLED, 0);
@@ -138,7 +159,9 @@ void loop()
     
   // Open/close the solenoid valve based on the current CO2 reading 
   // Solenoid  opens for a duration of 'SolenoidOnTime' and then closes
-  if (CO2 < CO2Setpoint) {
+  if (CO2 < CO2Setpoint && CO2 < CO2Threshold*CO2Setpoint) {
+    digitalWrite(Solenoid, HIGH);
+  } else if (CO2 < CO2Setpoint && CO2 > CO2Threshold*CO2Setpoint) {
     digitalWrite(Solenoid, HIGH);
     delay(SolenoidOnTime);
     digitalWrite(Solenoid, LOW);
@@ -169,7 +192,7 @@ void updateMatrix() {
   }
 }
 
-// For debugging only, uncomment line 151
+// For debugging only
 void SerialPrintResults()
 {
   Serial.println("-----------------------------------------------");
