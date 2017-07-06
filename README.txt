@@ -5,7 +5,7 @@ December 2014
 In this repository there are are 4 bits of code for testing and 1 piece of control code for controlling the CO2 incubator.
 
 Complete instructions for building and implementing the incubator are available at:
-http://www.pellinglab.net/diy/diyco2incubator/
+https://www.pellinglab.net/single-post/diy/DIY-CO2-Incubator-Bioreactor-for-Mammalian-Cell-Culture
 
 Test code:
 - Test_CO2_Sensor: Simple test code for the cozir CO2 sensor
