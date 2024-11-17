@@ -24,4 +24,4 @@ Attribution-NonCommercial-ShareAlike 4.0 International
 https://creativecommons.org/licenses/by-nc-sa/4.0/
 Copyright (c) 2014 Pelling Lab
 
-THIS PROJECT IS NO LONGER BEING MANAGED. 
+THIS PROJECT IS NO LONGER BEING MAINTAINED. 
