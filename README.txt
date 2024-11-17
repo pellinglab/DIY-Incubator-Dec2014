@@ -10,7 +10,6 @@ https://www.pellinglab.net/single-post/diy/DIY-CO2-Incubator-Bioreactor-for-Mamm
 [2024 UPDATE] Please note that this project is no longer being maintained, however the GitHub
 repository is still available: https://github.com/pellinglab/DIY-Incubator-Dec2014
 
-
 Test code:
 - Test_CO2_Sensor: Simple test code for the cozir CO2 sensor
 - Test_PWM_Fan_Control: Simple test code for the DC fan
